@@ -5,9 +5,14 @@ let { StudentDatas, InsertData } = require("./Model");
 //create server
 // console.log(StudentDatas)
 app.use(express.json());
-app.use(cors())//All Plateform can use my Apis
+app.use(
+  // cors({
+  //   // origin: ["http://localhost:5173","<Domain>"], //domain
+  //   origin: "http://localhost:5173", //domain,
 
-
+  // }),
+  cors(),
+); //All Plateform can use my Apis
 
 let Port = 8001;
 app.listen(Port, function () {
@@ -16,3 +21,7 @@ app.listen(Port, function () {
 
 app.get("/StudentData", StudentDatas);
 app.post("/AddStudent", InsertData);
+
+
+//install Database
+// (Mongodb),MYSQL

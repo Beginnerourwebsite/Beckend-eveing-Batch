@@ -57,8 +57,8 @@ export default function App() {
 		console.log(Result)
 
 		//70%
-		// line of code ko high
-		//axios (line of code less,fast,easy to use,given more securties.....)
+		//line of code ko high
+		//axios (line of code less,fast,easy to use,given more securties and more fetures.....)
 	}
 	async function MyGetApiWithAxios() {
 		//package install
