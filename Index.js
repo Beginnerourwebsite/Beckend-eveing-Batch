@@ -5,28 +5,23 @@ let mysql = require("mysql");
 
 app.use(express.json());
 app.use(cors());
-
 let connection = mysql.createConnection({
-  user: "root",
-  password: "1234",
   host: "localhost",
+  password: "1234",
+  user: "root",
 });
+
 connection.connect(function (err) {
   if (err) console.log(err);
-  else console.log("Database Is Connected");
+  else console.log("database connected successfully");
 });
 
-//api
-// update
-// get
-// insert
-// delete
+app.get("/:Name/:Id", (req, res, next) => {
+  let { Name, Id } = req.params;
 
-//get
-
-app.get("/getUser", function (req, res) {
   connection.query(
-    "select * from nodejsapis.eveningbatch",
+    "select * from nodejsapis.eveningbatch where id=?",
+    [Id],
     function (err, result) {
       if (err) console.log(err);
       else {
@@ -39,19 +34,21 @@ app.get("/getUser", function (req, res) {
       }
     },
   );
+  //   let data = req.params;
+  //   data.Name;
+  //   data.id;
+
+  console.log(Name, Id);
 });
 
-app.post("/regUser", function (req, res) {
+app.put("/updateData", function (req, res) {
   connection.query(
-    "insert into nodejsapis.eveningbatch (id,name,email,password) value (1,'Suresh','Suresh@g,ail.com','asdfghjklzxcvbnm')",
+    "update Nodejsapis.eveningbatch set Name=? where id=?",
     function (err, result) {
-      if (err) {
-        console.log(err);
-        res.json(err);
-      } else {
-        console.log(result);
+      if (err) console.log(err);
+      else {
         res.json({
-          response: "Insert Successfully",
+          ResponseMessage: "Update Successfully",
           result,
         });
       }
@@ -59,20 +56,19 @@ app.post("/regUser", function (req, res) {
   );
 });
 
-app.post("/regUserDyn", function (req, res) {
-  let Datas = req.body;
-  console.log(Datas);
+
+app.put("/updateDataDyn", function (req, res) {
+  let { Updatedvalue, condition } = req.body;
+  //image,file,url
+
   connection.query(
-    "insert into nodejsapis.eveningbatch (id,name,email,password) value (?,?,?,?)",
-    [Datas.id, Datas.name, Datas.email, Datas.password],
+    "update Nodejsapis.eveningbatch set ? where ?",
+    [Updatedvalue, condition],
     function (err, result) {
-      if (err) {
-        console.log(err);
-        res.json(err);
-      } else {
-        console.log(result);
+      if (err) console.log(err);
+      else {
         res.json({
-          response: "Insert Successfully",
+          ResponseMessage: "Update Successfully",
           result,
         });
       }
@@ -80,85 +76,23 @@ app.post("/regUserDyn", function (req, res) {
   );
 });
 
-app.post("/regUserDyn2", function (req, res) {
-  let Datas = req.body;
-  console.log(Datas);
+app.delete("/updateDataDyn", function (req, res) {
+  let { Updatedvalue, condition } = req.body;
+
   connection.query(
-    "insert into nodejsapis.eveningbatch  set ?",
-    [Datas],
+    "update Nodejsapis.eveningbatch set ? where ?",
+    [Updatedvalue, condition],
     function (err, result) {
-      if (err) {
-        console.log(err);
-        res.json(err);
-      } else {
-        console.log(result);
-        connection.query(
-          "select * from nodejsapis.eveningbatch",
-          function (err, result) {
-            if (err) console.log(err);
-            else {
-              console.log(result);
-              res.json({
-                response: "Get Successfully",
-                RecordCount: result.length,
-                result,
-              });
-            }
-          },
-        );
-        // res.json({
-        //   response: "Insert Successfully",
-        //   result,
-        // });
+      if (err) console.log(err);
+      else {
+        res.json({
+          ResponseMessage: "Update Successfully",
+          result,
+        });
       }
     },
   );
 });
-
-app.delete("/userDelete", function (req, res) {
-  let datas = req.body;
-  let sql = "delete from nodejsapis.eveningbatch where id=?";//null//data not deleted//actual data 1,2,6,58//it will be delete
-  if (datas.id == null) {
-    sql = "delete from nodejsapis.eveningbatch where id is null";
-  }
-  connection.query(sql, [datas.id], function (err, result) {
-    if (err) {
-      res.json(err);
-    } else {
-      res.json({
-        response: "Delete Successfully",
-        result,
-      });
-    }
-  });
-});
-
-
-
-app.delete("/userDelete/:id", function (req, res) {
-  let datas = req.params;//{id:"Values"}
-  console.log(datas)
-  let sql = "delete from nodejsapis.eveningbatch where id=?";
-  if (datas.id == null) {
-    sql = "delete from nodejsapis.eveningbatch where id is null";
-  }
-  connection.query(sql, [datas.id], function (err, result) {
-    if (err) {
-      res.json(err);
-    } else {
-      res.json({
-        response: "Delete Successfully",
-        result,
-      });
-    }
-  });
-});
-
-
-
-
-
-
 let port = 8000;
 app.listen(port, () => {
   console.info(`Server listen on port ${port}`);
