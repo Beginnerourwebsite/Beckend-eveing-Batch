@@ -1,99 +1,31 @@
-const express = require("express");
-const app = express();
-let cors = require("cors");
-let mysql = require("mysql");
+let { App, Connection } = require("./Configration");
 
-app.use(express.json());
-app.use(cors());
-let connection = mysql.createConnection({
-  host: "localhost",
-  password: "1234",
-  user: "root",
-});
-
-connection.connect(function (err) {
-  if (err) console.log(err);
-  else console.log("database connected successfully");
-});
-
-app.get("/:Name/:Id", (req, res, next) => {
-  let { Name, Id } = req.params;
-
-  connection.query(
-    "select * from nodejsapis.eveningbatch where id=?",
-    [Id],
-    function (err, result) {
-      if (err) console.log(err);
-      else {
-        console.log(result);
-        res.json({
-          response: "Get Successfully",
-          RecordCount: result.length,
-          result,
-        });
+App.get("/GetUser", (req, res, next) => {
+	Connection.query("select * from Nodejsapis.eveningbatch order by id desc",function (err, result) {
+      if (err) {
+        console.log(err);
+        res.end();
+      } else {
+        res.json(result);
       }
-    },
-  );
-  //   let data = req.params;
-  //   data.Name;
-  //   data.id;
-
-  console.log(Name, Id);
+    },)
 });
-
-app.put("/updateData", function (req, res) {
-  connection.query(
-    "update Nodejsapis.eveningbatch set Name=? where id=?",
+App.post("/userReg", (req, res, next) => {
+	let Data = req.body;
+	console.log(Data)
+  Connection.query(
+    "INSERT INTO Nodejsapis.eveningbatch set ?",
+    [Data],
     function (err, result) {
-      if (err) console.log(err);
-      else {
-        res.json({
-          ResponseMessage: "Update Successfully",
-          result,
-        });
+      if (err) {
+        console.log(err);
+        res.end();
+      } else {
+        res.json(result);
       }
     },
   );
 });
 
-
-app.put("/updateDataDyn", function (req, res) {
-  let { Updatedvalue, condition } = req.body;
-  //image,file,url
-
-  connection.query(
-    "update Nodejsapis.eveningbatch set ? where ?",
-    [Updatedvalue, condition],
-    function (err, result) {
-      if (err) console.log(err);
-      else {
-        res.json({
-          ResponseMessage: "Update Successfully",
-          result,
-        });
-      }
-    },
-  );
-});
-
-app.delete("/updateDataDyn", function (req, res) {
-  let { Updatedvalue, condition } = req.body;
-
-  connection.query(
-    "update Nodejsapis.eveningbatch set ? where ?",
-    [Updatedvalue, condition],
-    function (err, result) {
-      if (err) console.log(err);
-      else {
-        res.json({
-          ResponseMessage: "Update Successfully",
-          result,
-        });
-      }
-    },
-  );
-});
-let port = 8000;
-app.listen(port, () => {
-  console.info(`Server listen on port ${port}`);
-});
+App.put("/UpdateUserNameorMail", (req, res, next) => {});
+App.delete("/DeleteUser", function (req, res) {});
