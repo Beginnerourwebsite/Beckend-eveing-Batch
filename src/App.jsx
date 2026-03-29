@@ -21,7 +21,7 @@ export default function App() {
 
 				<h3>Register</h3>
 
-				<input onChange={GetUserDeatils} type="email" id="email1" placeholder="Email" required />
+				<input onChange={GetUserDeatils} type="email" id="email" placeholder="Email" required />
 				<input onChange={GetUserDeatils} type="text" id="name" placeholder="Username" required />
 				<input onChange={GetUserDeatils} type="password" id="password" placeholder="Password" required />
 
