@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <input type="file" name="" id="myfile" />
+    <button onclick="UploadFIle()">Submit</button>
+    <script>
+      async function UploadFIle() {
+        let UserFile = document.getElementById("myfile").files;
+        // let reader = new FileReader();
+        console.log(UserFile[0]);
+
+
+        // let reader = new FileReader(); //base64
+        // reader.readAsDataURL(UserFile[0]);
+        // reader.onload = function () {
+        //   console.log(reader.result);
+        // };
+
+
+
+
+        let formData = new FormData();
+        formData.append("Myfeild", UserFile[0]);
+
+		
+
+        let res = await fetch("http://localhost:8000/FrontEndFiles", {
+          method: "POST",
+          body: formData,
+        });
+        res.json().then((data) => {
+          console.log(data);
+        });
+        //fetch
+        // axios//cdn
+      }
+    </script>
+  </body>
+</html>
