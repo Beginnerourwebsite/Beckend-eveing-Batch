@@ -2,6 +2,7 @@ const express = require("express");
 const App = express();
 let cors = require("cors");
 let mysql = require("mysql");
+let Multer = require("multer");
 let nodemailer = require("nodemailer");
 const InvoiceTemplate = require("./InvoiceTemplate");
 
@@ -19,8 +20,8 @@ let transporter = nodemailer.createTransport({
 
 App.post("/SendMail", (req, res) => {
   let UsreMailDetails = req.body;
-let randomNumber = Math.random(); // 0 to 0.95455165*50
-let myOtp = Math.floor(randomNumber * 99999);
+  let randomNumber = Math.random(); // 0 to 0.95455165*50
+  let myOtp = Math.floor(randomNumber * 99999);
   let MyMailconfig = {
     from: "pankajdesktop23@gmail.com",
     to: UsreMailDetails.to || "",
@@ -56,7 +57,7 @@ App.listen(Port, function () {
   console.log("you port is " + Port);
 });
 
-module.exports = { Connection, App };
+module.exports = { Connection, App, Multer };
 
 //2 ways
 //free way (1000)(google)
