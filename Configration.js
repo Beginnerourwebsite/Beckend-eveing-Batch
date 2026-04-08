@@ -2,6 +2,8 @@ const express = require("express");
 const App = express();
 let cors = require("cors");
 let mysql = require("mysql");
+let MongoDb = require("mongodb");
+let Mongoclient = MongoDb.MongoClient;
 let Multer = require("multer");
 let nodemailer = require("nodemailer");
 const InvoiceTemplate = require("./InvoiceTemplate");
@@ -42,12 +44,12 @@ App.post("/SendMail", (req, res) => {
     }
   });
 });
-
-let Connection = mysql.createConnection({
+let obj = {
   user: "root",
   password: "1234",
   host: "localhost",
-});
+};
+let Connection = mysql.createConnection(obj);
 Connection.connect(function (err) {
   if (err) console.log(err);
   else console.log("Database Is Connected");
@@ -56,6 +58,29 @@ let Port = 8000;
 App.listen(Port, function () {
   console.log("you port is " + Port);
 });
+
+//MongoDb Connection
+let url = "mongodb://localhost:27017/";
+let ClientDb = new Mongoclient(url);
+
+App.get("/TestMongoDb", function (req, res) {
+  ClientDb.connect()
+    .then(function (client) {
+      console.log("MongoDb Is Connected");
+      let db = client.db("RobotManaging");
+      db.collection("ProductList")
+        .find()
+        .toArray()
+        .then(function (data) {
+          res.json(data);
+        });
+    })
+    .catch(function (err) {
+      console.log(err);
+    });
+});
+
+console.log("ClientDb", ClientDb);
 
 module.exports = { Connection, App, Multer };
 
