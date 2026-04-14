@@ -10,11 +10,6 @@ const InvoiceTemplate = require("./InvoiceTemplate");
 
 App.use(express.json());
 App.use(cors());
-App.use("/FrontEndFile", express.static("FrontEndFile"));
-// App.use("/GetImage", express.static("FrontEndFileImage"));
-// App.use("/GetPDf", express.static("FrontEndFilePDf"));
-// App.use("/GetVideo", express.static("FrontEndFileVideo"));
-// App.use( express.static("FrontEndFile"));
 
 let transporter = nodemailer.createTransport({
   service: "gmail",
@@ -33,8 +28,11 @@ App.post("/SendMail", (req, res) => {
     from: "pankajdesktop23@gmail.com",
     to: UsreMailDetails.to || "",
     subject: UsreMailDetails.subject || "",
-
+    // text: UsreMailDetails.text || "",
     text: `Your OTP is: ${myOtp}`,
+    // html:
+    //   InvoiceTemplate(UsreMailDetails.customerName, UsreMailDetails.subtotal) ||
+    //   "",
   };
 
   transporter.sendMail(MyMailconfig, function (err, info) {
@@ -99,17 +97,21 @@ let UploadSystem = Multer({ storage: Storage });
 
 App.get("/getProduct", async (req, res, next) => {
   let MyDb = await ConnectingMongoDb();
-  // let products = await MyDb.findOne({ Name: "Pankaj" });
-  let products = await MyDb.find().toArray();
-  // http://localhost:8000/FrontEndFile\36762351381_2.png
-  console.log(req.protocol);
-  console.log(req.host);
+  // let products = await MyDb.find().toArray();
+  // let products = await MyDb.find({ Name: "Pankaj",Price:1000 }).sort({ Price: 1 }).toArray();
+  let products = await MyDb.findOne({ Name: "Pankaj" });
+  // let products = await MyDb.find().select("Name Price").toArray();
 
+  // select top 2 from db.tablename where limit 2
+  // select name,class,phone from db.tablename where price > 500
   res.json(products);
 });
 App.delete("/getProduct", async (req, res, next) => {
   let MyDb = await ConnectingMongoDb();
+
+  // let products = await MyDb.deleteOne({ Name: "mukesh" });
   let products = await MyDb.deleteMany({ Name: "mukesh" });
+
   res.json(products);
 });
 
@@ -117,20 +119,13 @@ App.post(
   "/insertProduct",
   UploadSystem.single("image"),
   async (req, res, next) => {
-    // console.log(req.file);
-    // console.log(req.body);
-    // console.log(`${req.protocol}://${req.host}/${req.file.path}`);
-
-    let HttpOrHttps = req.protocol;
-    let HostName = req.host;
-    let FilePath = req.file.path;
-   
-    let Url = `${HttpOrHttps}://${HostName}/${FilePath}`;
+    console.log(req.file);
+    console.log(req.body);
 
     let MyDb = await ConnectingMongoDb();
     let inserted = await MyDb.insertOne({
       ...req.body,
-      ImageUrl: Url,
+      ImageUrl: req.file.path,
     });
     res.json(inserted);
   },
