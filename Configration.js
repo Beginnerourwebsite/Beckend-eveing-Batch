@@ -124,7 +124,7 @@ App.post(
     let HttpOrHttps = req.protocol;
     let HostName = req.host;
     let FilePath = req.file.path;
-   
+
     let Url = `${HttpOrHttps}://${HostName}/${FilePath}`;
 
     let MyDb = await ConnectingMongoDb();
@@ -148,4 +148,34 @@ App.post("/insertProductMulty", async (req, res, next) => {
   res.json(inserted);
 });
 
-module.exports = { Connection, App, Multer };
+// app.post("/", function (req, res) {
+// // check krna ki data shi formate me aarha ha ya nhi
+
+// if(Request.body.Date && req.body.exp && req.body.Result){
+
+// }
+
+// });
+
+module.exports = { Connection, App, Multer,ConnectingMongoDb };
+
+// MongoDb
+// crud (create read update delete)
+
+// mongoose
+// Formate//method
+// midel ware
+// bycript
+
+// 1-2 min (2 Days)
+// 1 big project (5 Days)
+
+// let UserDetails = {
+//   UserName: "Pankaj",
+//   Email: "Pankaj@gmail.com",
+//   password: "1234",
+// };
+// //1234=>database =>save
+
+// // 1234=>bycript=>database("regerbjknkl2oi2")=>save
+// dcripted
