@@ -1,6 +1,6 @@
-const { App } = require("./Configration");
+const { App } = require("./Configration(18-04-26)");
 let becrypt = require("bcrypt");
-let { ConnectingMongoDb } = require("./Configration");
+let { ConnectingMongoDb } = require("./Configration(18-04-26)");
 
 ///midel ware kya hote ha
 
@@ -48,3 +48,17 @@ App.post("/LoginUser", async (req, res) => {
 // let res = await fetch("http://localhost:8000/SendMail");
 // let data = await res.json();
 // console.log(data);
+
+// mongoose vs MongoDb
+// mongoose ek library ha jo MongoDb ke sath use hoti ha aur MongoDb ek database ha
+
+//schema,pattern,model,collection,
+let UserDetails = {
+  Name: "Pankaj",
+  Email: "pankaj@gmail.com",
+  password: "123456",
+};
+//well formatted code
+//secure code
+
+

@@ -4,6 +4,8 @@ let cors = require("cors");
 let mysql = require("mysql");
 let MongoDb = require("mongodb");
 let Mongoclient = MongoDb.MongoClient;
+let Mongoose = require("mongoose");
+
 let Multer = require("multer");
 let nodemailer = require("nodemailer");
 const InvoiceTemplate = require("./InvoiceTemplate");
@@ -147,35 +149,4 @@ App.post("/insertProductMulty", async (req, res, next) => {
   ]);
   res.json(inserted);
 });
-
-// app.post("/", function (req, res) {
-// // check krna ki data shi formate me aarha ha ya nhi
-
-// if(Request.body.Date && req.body.exp && req.body.Result){
-
-// }
-
-// });
-
-module.exports = { Connection, App, Multer,ConnectingMongoDb };
-
-// MongoDb
-// crud (create read update delete)
-
-// mongoose
-// Formate//method
-// midel ware
-// bycript
-
-// 1-2 min (2 Days)
-// 1 big project (5 Days)
-
-// let UserDetails = {
-//   UserName: "Pankaj",
-//   Email: "Pankaj@gmail.com",
-//   password: "1234",
-// };
-// //1234=>database =>save
-
-// // 1234=>bycript=>database("regerbjknkl2oi2")=>save
-// dcripted
+module.exports = { Connection, App, Multer, ConnectingMongoDb,Mongoose };
