@@ -23,6 +23,7 @@ let MySchema = new Mongoose.Schema({
   },
 });
 
+
 let UserDatas = Mongoose.model("owncol", MySchema);
 
 App.post("/insertData", async (req, res, next) => {
@@ -31,22 +32,35 @@ App.post("/insertData", async (req, res, next) => {
 });
 
 App.get("/getData", async (req, res, next) => {
-//   let result = await UserDatas.find({ Name: "OmPati123" });
-  let result = await UserDatas.findOne({ Name: "OmPati123" });
-  
+    let result = await UserDatas.find();
+  // let result = await UserDatas.findOne({ Name: "OmPati123" });
+
   res.json(result);
 });
 App.delete("/getData", async (req, res, next) => {
-//   let result = await UserDatas.find({ Name: "OmPati123" });
-//   let result = await UserDatas.deleteOne({ Name: "OmPati123" });
-  let result = await UserDatas.deleteMany({ Name: "OmPati123" });
-  
+  let data = req.params;
+  //   let result = await UserDatas.find({ Name: "OmPati123" });
+  //   let result = await UserDatas.deleteOne({ Name: "OmPati123" });
+  let result = await UserDatas.deleteMany({ data });
+
   res.json(result);
 });
 
+App.put("/UpdateDatas/:id", async function (req, res) {
+  // let itemId = req.params.id;
+  let UpdateDetails = req.body;
+  let itemId = UpdateDetails.id;
+  
+  let result = await UserDatas.findByIdAndUpdate(
+    // { _id: itemId },
+      itemId,
+    { $set: UpdateDetails },
+  );
+  res.json(result);
+});
+// update <table> set Name='Pankaj' where Name='OmPati'
 // let obj = {
 //   Name: "Pankaj",
 //   Name: "om prakash",
 // };
 // console.log(obj);
-
